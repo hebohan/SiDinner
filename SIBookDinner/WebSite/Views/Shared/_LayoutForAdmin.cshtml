@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - 订餐管理系统</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/bootstrap.css")
+
+</head>
+<body>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/colorbox")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("scripts", required: false)
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("订餐管理系统", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li id="tab_1">@Html.ActionLink("首页", "Index", "Home")</li>
+                    <li id="tab_2">@Html.ActionLink("订餐人员管理", "Indexs", "Group")</li>
+                    <li id="tab_3">@Html.ActionLink("订餐管理", "Index", "Dinnerbook")</li>
+                    <li id="tab_4">@Html.ActionLink("员工消费记录", "Index", "Consume")</li>
+                    <li id="tab_5">@Html.ActionLink("员工充值记录", "Index", "Recharge")</li>
+                </ul>
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div style="height : 50px"></div>
+        @RenderBody()
+        <div style="height : 50px"></div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - BookDinner System</p>
+        </footer>
+    </div>
+</body>
+</html>
+
+
+
+

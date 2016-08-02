@@ -1,0 +1,73 @@
+﻿@model IEnumerable<Rule.Entities.staffGroup>
+@{
+    ViewBag.Title = "移除";
+    Layout = "~/Views/Shared/_LayoutForAdmin.cshtml";
+}
+
+<h2>是否确定移除该成员？</h2>
+
+<div>
+    <h4> </h4>
+    <hr />
+    @{
+        List<Rule.Entities.staffGroup> staffgroupList = ViewData["staffgroupList"] as List<Rule.Entities.staffGroup>;
+    }
+    @foreach (var item in staffgroupList)
+    {
+        <dl class="dl-horizontal">
+            <dt>工号</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.StaffNo)
+            </dd>
+
+            <dt>姓名</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.StaffName)
+            </dd>
+
+            <dt>分组</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.StaffGroup)
+            </dd>
+
+            <dt>备注</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </dd>
+
+            <dt>创建人员工号</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.CreateStaffNo)
+            </dd>
+
+            <dt>创建时间</dt>
+            <dd>
+                @Html.DisplayFor(modelItem => item.CreateDatetime)
+            </dd>
+
+        </dl>
+    }
+    
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="col-md-1"></div>
+        <div class="col-md-1">
+            <input type="submit" value="确定" class="btn btn-default" />
+        </div>
+        <div class="col-md-1">
+            @*<form method="post" action="~/Group/indexs">
+                <input type="submit" value="取消" class="btn btn-default" />
+            </form>*@
+        </div>
+        @*<div class="form-actions no-color">
+            <input type="submit" value="确定" class="btn btn-default" />
+
+            <form method="post" action="~/Group/indexs">
+                <input type="submit" value="取消" class="btn btn-default" />
+            </form>
+        </div>*@
+    }
+</div>

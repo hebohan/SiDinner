@@ -1,0 +1,90 @@
+﻿@model PagedList.IPagedList<Rule.Entities.dinnerbook>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "订餐";
+    Layout = "~/Views/Shared/_LayoutForAdmin.cshtml";
+}
+
+<h2>订餐记录</h2>
+<link href="~/Content/colorbox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.colorbox.js"></script>
+
+<p>
+    @Html.ActionLink("新建订餐记录", "../Dinnerbook/Create",null, new { @class = "iframe" })
+</p>
+<table class="table">
+    <tr>
+        <th style="text-align:center">
+            <h5><strong>订餐编号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>总价</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>订餐人员工号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>订餐时间</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>备注</strong></h5>
+        </th>
+        <th></th>
+    </tr>
+
+    @*@{
+        List<Rule.Entities.dinnerbook> dinnerbookList = ViewData["dinnerbookList"] as List<Rule.Entities.dinnerbook>;
+    }*@
+    @foreach (var item in Model)
+    {
+        <tr style="text-align:center">
+            <td>
+                @Html.DisplayFor(modelItem => item.ID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrices)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookStaffNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BookDatetime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+            <td>
+                @Html.ActionLink("订单明细", "Details", new { id = item.ID })
+            </td>
+        </tr>
+    }
+</table>
+共 @Model.TotalItemCount 条记录，每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    $(function(){
+        $("tr:even").css("background","#f5f5f5");
+        $("tr:odd").css("background","#dfdfdf");
+    })
+
+    $(document).ready(function () {
+        $(".iframe").colorbox({
+            iframe: true,
+            width: "55%",
+            height: "60%",
+            onLoad: function () {
+                $("#cboxClose").text("关闭");
+            }
+        });
+
+        document.getElementById("tab_1").className = "";
+        document.getElementById("tab_2").className = "";
+        document.getElementById("tab_3").className = "active";
+        document.getElementById("tab_4").className = "";
+        document.getElementById("tab_5").className = "";
+    })
+</script>

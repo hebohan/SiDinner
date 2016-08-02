@@ -1,0 +1,147 @@
+﻿@model IEnumerable<Rule.Entities.staff>
+@{
+    ViewBag.Title = "详情";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Details</title>
+    <style type="text/css">
+        body {
+            text-align: center;
+        }
+
+        div {
+            width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        dt{
+            float:left;
+        }
+    </style>
+</head>
+<body>
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+    <h2>职员详情</h2>
+    @{
+        List<Rule.Entities.staff> staffList = ViewData["staffList"] as List<Rule.Entities.staff>;
+    }
+    @foreach (var item in staffList)
+    {
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            
+            <dt>
+                工号
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.StaffNo)
+                <br>
+            </dd>
+            
+            <dt>
+                姓名
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.StaffName)
+                <br>
+            </dd>
+
+            <dt>
+                权限
+            </dt>
+
+            @if (item.StaffPower == 0)
+            {
+                <dd>超级管理员 <br></dd>
+            }
+            else if (item.StaffPower == 1)
+            {
+                <dd>管理员 <br></dd>
+            }
+            else if (item.StaffPower == 2)
+            {
+                <dd>普通职员 <br></dd>
+            }
+            <dt>
+                余额
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.Balance)
+                <br>
+            </dd>
+
+            <dt>
+                备注
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.Remark)
+                <br>
+            </dd>
+
+            <dt>
+                创建人工号
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.CreateStaffNo)
+                <br>
+            </dd>
+
+            <dt>
+                创建时间
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.CreateDatetime)
+                <br>
+            </dd>
+
+            <dt>
+                更新时间
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.UpdateDatetime)
+                <br>
+            </dd>
+
+            <dt>
+                上一次登陆时间
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.LoginTime)
+                <br>
+            </dd>
+
+            <dt>
+                上一次登陆IP
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(modelItem => item.LoginIP)
+                <br>
+            </dd>
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("编辑", "Edit", new { id = item.ID })
+    </p>
+    }
+</body>
+</html>
+

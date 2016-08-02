@@ -1,0 +1,150 @@
+﻿@model  Rule.Entities.staff
+
+@{
+    ViewBag.Title = "新建";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新建</title>
+    <style type="text/css">
+        body {
+            text-align: center;
+        }
+
+        div {
+            width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.form.js")" type="text/javascript"></script>
+</head>
+<body @*onload="top.load()"*@>
+    
+
+    <h2>新建账号</h2>
+
+  
+        @Html.AntiForgeryToken()
+    <form id="from1">
+        <div class="form-horizontal">
+            <h4> </h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <h5><strong>工号</strong></h5>
+                </div>
+                <div class="col-xs-9" style="text-align:left;">
+                    <input id="StaffNo" type="text" name="StaffNo" class="form-control" data-val="true" data-val-required="必须输入工号" autocomplete='off' />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="StaffNo" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <h5><strong>姓名</strong></h5>
+                </div>
+                <div class="col-xs-9" style="text-align:left;">
+                    <input id="StaffName" type="text" name="StaffName" class="form-control" data-val="true" data-val-required="必须输入姓名" autocomplete='off' />
+                    <span class="field-validation-valid text-danger" data-valmsg-for="StaffName" data-valmsg-replace="true"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <h5><strong>密码</strong></h5>
+                </div>
+                <div class="col-xs-9" style="text-align:left;">
+                    @Html.EditorFor(model => model.StaffPwd, new { htmlAttributes = new { @type = "text", @class = "form-control", @autocomplete = "off", @onclick = "changetype()" } })
+                    @Html.ValidationMessageFor(model => model.StaffPwd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <h5><strong>权限</strong></h5>
+                </div>
+                <div class="col-xs-9">
+                    <select id="StaffPower" name="StaffPower" class="form-control" onchange="changePower(this)">
+                        <option value="2">普通职员</option>
+                        <option value="1">管理员</option>
+                    </select>
+                </div>
+                <input type="hidden" id="hiddenPower" name="hiddenPower" value="2"></div>
+
+
+            <div class="form-group">
+                <div class="col-xs-3">
+                    <h5><strong>备注</strong></h5>
+                </div>
+                <div class="col-xs-9">
+                    @Html.EditorFor(model => model.Remark, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class=" col-xs-12">
+                    <input id="btnAjaxSubmit" type="submit" value="创建" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    </form>
+</body>
+</html>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script type="text/javascript">
+    function changetype() {
+        document.getElementById("StaffPwd").type = "password";
+    }
+    function changePower() {
+        document.getElementById("hiddenPower").value = document.getElementById("StaffPower").value;
+    }
+
+    $(document).ready(function () {
+        $("#btnAjaxSubmit").click(function () {
+            if (document.getElementById("StaffNo").value != "" && document.getElementById("StaffName").value != "" && document.getElementById("StaffPwd").value != "") {
+                var options = {
+                    url: 'CreateAjax',
+                    type: 'post',
+                    dataType: 'text',
+                    data: $("#from1").serialize(),
+                    success: function (data) {
+                        alert("新纪录创建成功！");
+                        document.getElementById("StaffNo").value = "";
+                        document.getElementById("StaffName").value = "";
+                        document.getElementById("StaffPwd").value = "";
+                    }
+                };
+                $.ajax(options);
+                return false;
+            }
+            else {
+                alter("工号、姓名、密码项目不得为空！");
+                return false;
+            }
+        });
+        //str = $("#cboxClose").text();
+        //alert(str);
+        //$("#cboxClose").text("关闭");
+    });
+    
+    
+    
+</script>

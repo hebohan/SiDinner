@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+</head>
+<body>
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            @Html.ActionLink("你好，" + Session["StaffName"] + "!","About","Home")
+        </li>
+        <li>
+            @Html.ActionLink("注销", "LogOff", "Account")
+        </li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,176 @@
+﻿@*@model IEnumerable<Rule.Entities.staff>*@
+@model PagedList.IPagedList<Rule.Entities.staff>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "首页";
+    Layout = "~/Views/Shared/_LayoutForAdmin.cshtml";
+}
+
+@*<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />*@
+<link href="~/Content/colorbox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.colorbox.js"></script>
+
+<div class="row">
+    <div class="col-md-2">
+        <p><a class="iframe Refresh btn btn-default" href="/Home/Create">新建账号 &raquo;</a></p>
+    </div>
+</div>
+<div style="height:40px"></div>
+
+<table class="table">
+    <tr>
+        <th style="text-align:center">
+            <h5><strong>工号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>姓名</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>权限</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>余额</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>备注</strong></h5>
+        </th>
+
+        <th></th>
+    </tr>
+    @*@{
+            List<Rule.Entities.staff> staffList = ViewData["staffList"] as List<Rule.Entities.staff>;
+        }*@
+    @foreach (var item in Model)
+        {
+            if (item.Balance > 0 && item.Balance <= 10)
+            {
+                <tr class="warning" style="text-align:center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffName)
+                    </td>
+                    <td>
+                        @if (item.StaffPower == 0)
+                                {<p>超级管理员</p>}
+                                else if (item.StaffPower == 1)
+                                {<p>管理员</p>}
+                                else if (item.StaffPower == 2)
+                                {<p>普通职员</p>}
+                    </td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remark)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("编辑", "../Home/Edit/" + item.ID, null, new { @class = "iframe Refresh" }) |
+                        @Html.ActionLink("详情", "../Home/Details/" + item.ID, null, new { @class = "iframe" }) |
+                        @Html.ActionLink("删除", "Delete/" + item.ID, null, new { @onclick = "return delcfm()" }) |
+                        @Html.ActionLink("充值", "../Recharge/Create/" + item.ID, null, new { @class = "iframe Refresh" })
+                    </td>
+                </tr>
+            }
+            else if (item.Balance <= 0)
+            {
+                <tr class="danger" style="text-align:center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffName)
+                    </td>
+                    <td>
+                        @if (item.StaffPower == 0)
+                                {<p>超级管理员</p>}
+                                else if (item.StaffPower == 1)
+                                {<p>管理员</p>}
+                                else if (item.StaffPower == 2)
+                                {<p>普通职员</p>}
+                    </td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remark)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("编辑", "../Home/Edit/" + item.ID, null, new { @class = "iframe Refresh" }) |
+                        @Html.ActionLink("详情", "../Home/Details/" + item.ID, null, new { @class = "iframe" }) |
+                        @Html.ActionLink("删除", "Delete/" + item.ID, null, new { @onclick = "return delcfm()" }) |
+                        @Html.ActionLink("充值", "../Recharge/Create/" + item.ID, null, new { @class = "iframe Refresh" })
+                    </td>
+                </tr>
+            }
+            else
+            {
+                <tr style="text-align:center">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffNo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StaffName)
+                    </td>
+                    <td>
+                        @if (item.StaffPower == 0)
+                                {<p>超级管理员</p>}
+                                else if (item.StaffPower == 1)
+                                {<p>管理员</p>}
+                                else if (item.StaffPower == 2)
+                                {<p>普通职员</p>}
+                    </td>
+
+                    <td>@Html.DisplayFor(modelItem => item.Balance)</td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remark)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("编辑", "../Home/Edit/" + item.ID, null, new { @class = "iframe Refresh" }) |
+                        @Html.ActionLink("详情", "../Home/Details/" + item.ID, null, new { @class = "iframe Refresh" }) |
+                        @Html.ActionLink("删除", "Delete/" + item.ID, null, new { @onclick = "return delcfm()" }) |
+                        @Html.ActionLink("充值", "../Recharge/Create/" + item.ID, null, new { @class = "iframe Refresh" })
+                    </td>
+                </tr>
+            }
+        }
+</table>
+共 @Model.TotalItemCount 条记录，每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+<script language="javascript">
+    function delcfm() {
+        var text = "确认要删除该记录？"
+        if (!confirm(text)) {
+            return false;
+        }
+    }
+
+    $(document).ready(function () {
+        $(".iframe").colorbox({
+            iframe: true,
+            width: "55%",
+            height: "60%",
+            onLoad: function () {
+                $("#cboxClose").text("关闭");
+            }
+        });
+        $(".Refresh").colorbox({
+            onClosed:function(){
+                location.reload();
+            }
+        });
+
+        document.getElementById("tab_1").className = "active";
+        document.getElementById("tab_2").className = "";
+        document.getElementById("tab_3").className = "";
+        document.getElementById("tab_4").className = "";
+        document.getElementById("tab_5").className = "";
+
+    })
+</script>
+

@@ -1,0 +1,336 @@
+﻿@model Rule.Entities.dinnerbook
+@{
+    ViewBag.Title = "订餐";
+    Layout = null;
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>新建订餐记录</title>
+    <style type="text/css">
+        .ui-timepicker-div .ui-widget-header {
+            margin-bottom: 8px;
+        }
+
+        .ui-timepicker-div dl {
+            text-align: left;
+        }
+
+            .ui-timepicker-div dl dt {
+                height: 25px;
+                margin-bottom: -25px;
+            }
+
+            .ui-timepicker-div dl dd {
+                margin: 0 10px 10px 65px;
+            }
+
+        .ui-timepicker-div td {
+            font-size: 90%;
+        }
+
+        .ui-tpicker-grid-label {
+            background: none;
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            text-align: center;
+        }
+
+        div {
+            width: 500px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        input {
+            max-width: 345px;
+        }
+    </style>
+</head>
+<body>
+
+    @Styles.Render("~/Content/bootstrap.css")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    <script src="~/Scripts/jquery-1.10.2.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/My97DatePicker/WdatePicker.js"></script>
+    @*<script type="text/javascript" src="~/Scripts/jquery-ui.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-ui-slide.min.js"></script>
+    <script type="text/javascript" src="~/Scripts/jquery-ui-timepicker-addon.js"></script>*@
+
+    <script src="@Url.Content("~/Scripts/jquery.unobtrusive-ajax.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+    
+    @*<link rel="stylesheet" type="text/css" href="~/Content/jquery-ui.css" />*@
+    <h2>新建订餐记录</h2>
+    
+
+    @using (Ajax.BeginForm("Create", new AjaxOptions()))
+    {
+        @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" >
+        <h4> </h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>总价</strong></h5>
+            </div>
+            <div class="col-xs-9" style="text-align:left;">
+                <input id="totalprices" type="text" name="totalprices" class="form-control" onchange="TotalpricesChange(this)" />
+                <span class="" id="showTotalpricesWarning" style="color: #B94A48;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>分组</strong></h5>
+            </div>
+            <div class="col-xs-9">
+                @{
+                    List<Rule.Entities.group> items = ViewData["staffgroup"] as List<Rule.Entities.group>;
+                }
+                <select id="group-select" name="group-select" class="form-control" onchange="GetForSelect(this)">
+                    <option value="0" selected="selected">请选择</option>
+                    @foreach (var item in items)
+                    {
+                        <option value="@item.ID">@item.GroupName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>待选人员</strong></h5>
+            </div>
+            <div id="forselect" class="col-xs-7" style="max-width:320px">
+            </div>
+            <input type="button" onclick="ForRest()" value="清空" class="form-control" style="width:70px">
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>人数</strong></h5>
+            </div>
+            <div class="col-xs-9" style="text-align:left;">
+                <input type="text" id="num" name="num" readonly="readonly" class="form-control" />
+                <span class="" id="showNumWarning" style="color: #B94A48;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>人均消费</strong></h5>
+            </div>
+            <div class="col-xs-9">
+                <input id="consumemoney" type="text" name="consumemoney" readonly="readonly" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>订餐时间</strong></h5>
+            </div>
+            <div class="col-xs-9" style="text-align:left;">
+                <input id="bookdatetime" type="text" name="bookdatetime" class="form-control Wdate" onfocus="WdatePicker({lang:'zh-cn',dateFmt:'yyyy-MM-dd HH:mm:ss'})" onchange="checkDatetime(this)" onclick="checkNum()" />
+                <span class="" id="showBookdatetimeWarning" style="color: #B94A48;"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-xs-3">
+                <h5><strong>备注</strong></h5>
+            </div>
+            <div class="col-xs-9">
+                <input id="remark" type="text" name="remark" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-xs-12">
+                <input type="submit" value="提交" class="btn btn-default" onclick="return CfmEnt(this)" />
+            </div>
+        </div>
+    </div>
+    }
+</body>
+
+</html>
+
+<script type="text/javascript">
+    count = 0;
+    tcount = 0;
+    function enableCheckBox(para) {
+        if (para.checked) {
+            count++;
+            if (document.getElementById("totalprices").value != "") {
+                total = parseFloat(document.getElementById("totalprices").value);
+                con = total / count;
+                con = Math.round(con * 100) / 100; //四舍五入，保留两位小数
+                if (count != 0)
+                    document.getElementById("consumemoney").value = con;
+                else
+                    document.getElementById("consumemoney").value = "";
+            }
+            document.getElementById("num").value = count;
+            //选中checkbox要做的操作
+        } else {
+            count--;
+            if (document.getElementById("totalprices").value != "") {
+                total = parseFloat(document.getElementById("totalprices").value);
+                con = total / count;
+                con = Math.round(con * 100) / 100; //四舍五入，保留两位小数
+                if (count != 0)
+                    document.getElementById("consumemoney").value = con;
+                else
+                    document.getElementById("consumemoney").value = "";
+            }
+            document.getElementById("num").value = count;
+            //取消选中checkbox要做的操作
+        }
+    }
+
+    function ForRest() {
+        $("#forselect").empty();
+        document.getElementById("num").value = "";
+        document.getElementById("consumemoney").value = "";
+        count = 0;
+    }
+
+    function GetForSelect(id) {
+        if (document.getElementById("num").value != "" || document.getElementById("num").value != "0") {
+            $("#showNumWarning").html("");
+        }
+        else {
+            $("#showNumWarning").html("订餐人员名单不能为空");
+        }
+        tcount++;
+        $.ajax({
+            url: 'GetForSelect',
+            data: { "ID": $(id).val() },
+            type: "post",
+            datatype: "json",
+            success: function (data) {
+                $("<form action='' method='post'>")
+                if (data.length == 0) {
+                    $("<input type='checkbox' name='ArrStaffNo[]' onclick='enableCheckBox(this)' /><span>&nbsp;" + item["StaffName"] + "&nbsp;&nbsp;&nbsp;&nbsp;</span>")
+                    .val("0")
+                    .text("")
+                    .appendTo($("#forselect"));
+                }
+                $.each(data, function (i, item) {
+                    //$("<input type='checkbox' name='ArrStaffNo[]' onclick='enableCheckBox(this)' /><span>&nbsp;" + item["StaffName"] + "&nbsp;&nbsp;&nbsp;&nbsp;</span>")
+                    $("<input type='checkbox' id='ArrStaffNo[" + (1000 * tcount + i) + "]' name='ArrStaffNo[]' onclick='enableCheckBox(this)' /><span>&nbsp; <label for='ArrStaffNo[" + (1000 * tcount + i) + "]'>" + item["StaffName"] + "</label>&nbsp;&nbsp;&nbsp;&nbsp;</span>")
+                    .val(item["StaffNo"])
+                    .appendTo($("#forselect"));
+                });
+                $("</form> <?phpprint_r($_POST['ArrStaffNo']);?>")
+            }
+        });
+    }
+
+    function checkDatetime() {
+        if (document.getElementById("bookdatetime").value != "") {
+            $("#showBookdatetimeWarning").html("");
+        }
+    }
+
+    function checkNum() {
+        if (document.getElementById("num").value != "" || document.getElementById("num").value != "0") {
+            $("#showNumWarning").html("");
+        }
+        else {
+            $("#showNumWarning").html("订餐人员名单不能为空");
+        }
+    }
+
+    function IsNum(num) {
+        var reNum = /^\d*$/;
+        return (reNum.test(num));
+    }
+
+    function TotalpricesChange() {
+        if (!IsNum(totalprices.value)) {
+            //alert("请输入数字!");
+            $("#showTotalpricesWarning").html("请输入数字");
+            totalprices.value = "";
+        }
+        if (document.getElementById("totalprices").value != "") {
+            $("#showTotalpricesWarning").html("");
+        }
+        if (document.getElementById("totalprices").value != "" && document.getElementById("num").value != "") {
+            count = parseInt(document.getElementById("num").value);
+            total = parseFloat(document.getElementById("totalprices").value);
+            con = total / count;
+            con = Math.round(con * 100) / 100; //四舍五入，保留两位小数
+            if (count != 0)
+                document.getElementById("consumemoney").value = con;
+            else
+                document.getElementById("consumemoney").value = "";
+        }
+        else {
+            document.getElementById("consumemoney").value = "";
+        }
+    }
+
+    function SelectChange(e) {
+        var selected = $(e).val();
+        alert(selected);
+    }
+
+    $("#bookdatetime").datetimepicker(
+        {
+            showSecond: true,
+            showMillisec: false,
+            timeFormat: 'hh:mm:ss'
+        });
+
+    function CfmEnt() {
+        if (document.getElementById("totalprices").value == "" || document.getElementById("num").value == "" || document.getElementById("num").value == "0" || document.getElementById("bookdatetime").value == "") {
+            if (document.getElementById("totalprices").value == "") {
+                $("#showTotalpricesWarning").html("总价不得为空");
+            }
+            if (document.getElementById("num").value == "" || document.getElementById("num").value=="0") {
+                $("#showNumWarning").html("订餐人员名单不能为空");
+            }
+            if (document.getElementById("bookdatetime").value == "") {
+                $("#showBookdatetimeWarning").html("订餐时间不能为空");
+            }
+            return false;
+        }
+        if (document.getElementById("num").value != "" || document.getElementById("num").value != "0") {
+            $("#showNumWarning").html("");
+        }
+    }
+
+    function checkNum() {
+        if (!IsNum(RechargeMoney.value)) {
+            //alert("请输入数字!");
+            $("#showWarning").html("请输入数字");
+            RechargeMoney.value = "";
+            $("#RechargeMoney").focus();
+            return false;
+        }
+        if (document.getElementById("RechargeMoney").value == "") {
+            //alter("充值金额不得为空！");
+            $("#showWarning").html("充值金额不得为空");
+            $("#RechargeMoney").focus();
+            return false;
+        }
+        else {
+            $("#showWarning").html("");
+        }
+    }
+
+    function IsNum(num) {
+        var reNum = /^\d*$/;
+        return (reNum.test(num));
+    }
+</script>
+
+

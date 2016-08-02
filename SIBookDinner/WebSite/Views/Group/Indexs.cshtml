@@ -1,0 +1,274 @@
+﻿@model PagedList.IPagedList<Rule.Entities.staffGroup>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "人员";
+    Layout = "~/Views/Shared/_LayoutForAdmin.cshtml";
+}
+
+<link href="~/Content/colorbox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.colorbox.js"></script>
+
+<div class="row">
+    <div class="col-md-1">
+        <h4 style="margin-top:7px; text-align:right;">分组</h4>
+    </div>
+@{
+            List<Rule.Entities.group> items = ViewData["staffgroup"] as List<Rule.Entities.group>;
+}
+
+    <div class="col-md-3">
+        
+        <select id="groupselect" name="groupselect" class="form-control" onchange="GetStaffGroupList(this)">
+            <option value="0" selected="selected">请选择</option>
+            @foreach (var item in items)
+            {
+                <option value="@item.ID">@item.GroupName</option>
+            }
+        </select>
+        
+    </div> 
+    
+    <div class="col-md-6" style="margin-top: 7px;">
+        @*@Html.ActionLink("添加成员", null, null, new { @id = "AddMembers", @onclick = "return addcfm()", @class = "iframe Refresh" }) |*@
+        @Html.ActionLink("添加成员", null, null, new { @id = "AddMembers", @onclick = " addcfm();return false;"@*, @class = "Refresh"*@ }) |
+        @Html.ActionLink("删除该组", null, null, new { @id = "DeleteGroup", @onclick = "return delgrocfm()" }) |
+        @Html.ActionLink("编辑该组", null, null, new { @id = "EditGroup", @onclick = " editcfm();return false;"@*, @class = "iframe Refresh"*@ })
+    </div>
+    <div class="col-md-2" style="margin-top: 1.5px;">
+        <p><a id="createnew" name="createnew" class="iframe Refresh btn btn-default" href="/Group/Create">新建分组 &raquo; </a></p>
+    </div>
+</div>
+
+<div style="height:50px"></div>
+
+<table class="table">
+    <tr>
+        <th style="text-align:center">
+            <h5><strong>工号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>姓名</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>备注</strong></h5>
+        </th>
+        <th></th>
+    </tr>
+
+    <tbody id="grouplist" onchange="showStripe()">
+
+    </tbody>
+</table>
+<div id="pageList">
+
+</div>
+@*每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+@Html.PagedListPager(Model, page => Url.Action("Indexs", new { page }))*@
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script type="text/javascript">
+    function SetSelectVal() {
+        document.getElementById("groupselect").value = $("#groupselect option:last").val();
+        //alert($("#groupselect option:last").val());
+    }
+
+    function showStripe() {
+        $(function () {
+            $("tr:even").css("background", "#f5f5f5");
+            $("tr:odd").css("background", "#dfdfdf");
+        });
+    }
+
+    $(".iframe").colorbox({
+        iframe: true,
+        width: "55%",
+        height: "60%",
+        onLoad: function () {
+            $("#cboxClose").text("关闭");
+        }
+    });
+
+    $(document).ready(function () {
+        document.getElementById("tab_1").className = "";
+        document.getElementById("tab_2").className = "active";
+        document.getElementById("tab_3").className = "";
+        document.getElementById("tab_4").className = "";
+        document.getElementById("tab_5").className = "";
+
+        $("#grouplist").empty();
+        document.getElementById("groupselect").value = $("#groupselect option:last").val();
+        document.getElementById("DeleteGroup").href = "/Group/DeleteGroup/" + document.getElementById("groupselect").value;
+        $.ajax({
+            url: 'GetStaffGroupList',
+            data: { "id": $("#groupselect option:last").val() },
+            //data: { "id": document.getElementById("groupselect").value },
+            type: "post",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $("<tr style='text-align:center'><td>" + item["StaffNo"] + "</td>" +
+                      "<td>" + item["StaffName"] + "</td>" +
+                      "<td>" + item["Remark"] + "</td>" +
+                      "<td><a href='' value='" + item["ID"] + "' onclick = 'return delcfm(this)' >移出该组</a></td></tr>")
+                    .appendTo($("#grouplist"));
+                    showStripe();
+                });
+            }
+        });
+        
+    });
+
+    function GetStaffGroupList(id) {
+        document.getElementById("DeleteGroup").href = "/Group/DeleteGroup/" + document.getElementById("groupselect").value;
+        $("#grouplist").empty(); 
+        $.ajax({
+            url: 'GetStaffGroupList',
+            data: { "id": $(id).val() },
+            type: "post",
+            datatype: "json",
+            success: function (data) {
+                $.each(data, function (i, item) {
+                    $("<tr style='text-align:center'><td>" + item["StaffNo"] + "</td>" +
+                      "<td>" + item["StaffName"] + "</td>" +
+                      "<td>" + item["Remark"] + "</td>" +
+                      "<td><a href='' value='" + item["ID"] + "' onclick = 'return delcfm(this)' >移出该组</a></td></tr>")
+                     .appendTo($("#grouplist"));
+                    showStripe();
+                });
+            }
+        });
+    }
+
+    function delcfm(ID) {
+        var text = "确认要从分组中移除该成员？"
+        if (!confirm(text)) {
+            return false;
+        }
+        $.ajax({
+            url: 'Delete',
+            data: { "ID": $(ID).attr("value") },
+            type: "post",
+            datatype: "json",
+            success: function (data) {
+                $("#grouplist").empty();
+                $.ajax({
+                    url: 'GetStaffGroupList',
+                    data: { "id": $("#groupselect").val() },
+                    type: "post",
+                    datatype: "json",
+                    success: function (data) {
+                        $.each(data, function (i, item) {
+                            $("<tr style='text-align:center'><td>" + item["StaffNo"] + "</td>" +
+                              "<td>" + item["StaffName"] + "</td>" +
+                              "<td>" + item["Remark"] + "</td>" +
+                              "<td><a href='' value='" + item["ID"] + "' onclick = 'return delcfm(this)' >移出该组</a></td></tr>")
+                            .appendTo($("#grouplist"));
+                            showStripe();
+                        });
+                    }
+                });
+            }
+        });
+        return false;     
+    }
+
+    function delgrocfm() {
+        if (document.getElementById("groupselect").value == 0) {
+            alert("请选择分组！");
+            return false;
+        }
+        else {
+            var text = "确认要删除该分组？"
+            if (!confirm(text)) {
+                return false;
+            }
+        }
+    }
+
+    function addcfm() {
+        if (document.getElementById("groupselect").value == 0) {
+            alert("请选择分组！");
+            return false;
+        }
+        else {
+            $.colorbox({
+                iframe: true,
+                width: "55%",
+                height: "60%",
+                href: "../Group/Add/" + document.getElementById("groupselect").value,
+                onLoad: function () {
+                    $("#cboxClose").text("关闭");
+                },
+                onClosed: function () {
+                    $("#grouplist").empty();
+                    document.getElementById("DeleteGroup").href = "/Group/DeleteGroup/" + document.getElementById("groupselect").value;
+                    $.ajax({
+                        url: 'GetStaffGroupList',
+                        //data: { "id": $("#groupselect option:last").val() },
+                        data: { "id": document.getElementById("groupselect").value },
+                        type: "post",
+                        datatype: "json",
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                $("<tr style='text-align:center'><td>" + item["StaffNo"] + "</td>" +
+                                    "<td>" + item["StaffName"] + "</td>" +
+                                    "<td>" + item["Remark"] + "</td>" +
+                                    "<td><a href='' value='" + item["ID"] + "' onclick = 'return delcfm(this)' >移出该组</a></td></tr>")
+                                .appendTo($("#grouplist"));
+                                showStripe();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    function editcfm() {
+        if (document.getElementById("groupselect").value == 0) {
+            alert("请选择分组！");
+            return false;
+        }
+        else {
+            $.colorbox({
+                iframe: true,
+                width: "55%",
+                height: "60%",
+                href: "../Group/Edit/" + document.getElementById("groupselect").value,
+                onLoad: function () {
+                    $("#cboxClose").text("关闭");
+                },
+                onClosed: function () {
+                    $("#grouplist").empty();
+                    document.getElementById("DeleteGroup").href = "/Group/DeleteGroup/" + document.getElementById("groupselect").value;
+                    $.ajax({
+                        url: 'GetStaffGroupList',
+                        //data: { "id": $("#groupselect option:last").val() },
+                        data: { "id": document.getElementById("groupselect").value },
+                        type: "post",
+                        datatype: "json",
+                        success: function (data) {
+                            $.each(data, function (i, item) {
+                                $("<tr style='text-align:center'><td>" + item["StaffNo"] + "</td>" +
+                                  "<td>" + item["StaffName"] + "</td>" +
+                                  "<td>" + item["Remark"] + "</td>" +
+                                  "<td><a href='' value='" + item["ID"] + "' onclick = 'return delcfm(this)' >移出该组</a></td></tr>")
+                                .appendTo($("#grouplist"));
+                                showStripe();
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    //function Refresh() {
+    //    location.reload();
+    //}
+</script>
+

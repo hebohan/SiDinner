@@ -1,0 +1,93 @@
+﻿@model PagedList.IPagedList <Rule.Entities.consume>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "消费";
+    Layout = "~/Views/Shared/_LayoutForAdmin.cshtml";
+}
+<link href="~/Content/colorbox.css" rel="stylesheet" />
+<script src="~/Scripts/jquery.colorbox.js"></script>
+<h2>消费记录</h2>
+
+<table class="table">
+    <tr>
+        <th style="text-align:center">
+            <h5><strong>订餐编号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>工号</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>姓名</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>消费金额</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>消费时间</strong></h5>
+        </th>
+        <th style="text-align:center">
+            <h5><strong>备注</strong></h5>
+        </th>
+    </tr>
+
+    @*@{
+        List<Rule.Entities.consume> consumeList = ViewData["consumeList"] as List<Rule.Entities.consume>;
+    }*@
+    @foreach (var item in Model)
+    {
+        <tr style="text-align:center">
+            <td>
+                @Html.DisplayFor(modelItem => item.BookID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffNo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StaffName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConsumeMoney)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ConsumeDatetime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Remark)
+            </td>
+        </tr>
+    }
+
+</table>
+共 @Model.TotalItemCount 条记录，每页 @Model.PageSize 条记录，共 @Model.PageCount 页，当前第 @Model.PageNumber 页
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))
+
+<script type="text/javascript">
+    $(function(){
+        $("tr:even").css("background","#f5f5f5");
+        $("tr:odd").css("background","#dfdfdf");
+    })
+
+    $(document).ready(function () {
+        document.getElementById("tab_1").className = "";
+        document.getElementById("tab_2").className = "";
+        document.getElementById("tab_3").className = "";
+        document.getElementById("tab_4").className = "active";
+        document.getElementById("tab_5").className = "";
+    })
+
+    $(document).ready(function () {
+        $(".iframe").colorbox({
+            iframe: true,
+            width: "55%",
+            height: "60%",
+            onLoad: function () {
+                $("#cboxClose").text("关闭");
+            }
+        });
+        $(".Refresh").colorbox({
+            onClosed: function () {
+                location.reload();
+            }
+        });
+    })
+</script>

@@ -1,0 +1,358 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SIStudio.Framework</name>
+    </assembly>
+    <members>
+        <member name="T:SIStudio.Framework.SIHtmlHelper">
+            <summary>
+            HTML处理、转换
+            </summary>
+        </member>
+        <member name="M:SIStudio.Framework.SIHtmlHelper.ToHtmlStr(System.String)">
+            <summary>
+            格式化文本为HTML文本
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SIStudio.Framework.SIFunction">
+            <summary>
+            系统函数库
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.SIFunction.CRCTable">
+            <summary>
+            CRC数值表
+            </summary>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.GetCRC32(System.String)">
+            <summary>
+            获取CRC32
+            </summary>
+            <param name="source">源字符串</param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.IsNumberic(System.String)">
+            <summary>
+            是否纯数字
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.IsEmail(System.String)">
+            <summary>
+            是否为合法邮箱
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.IsMobile(System.String)">
+            <summary>
+            是否合法手机号 号段为13,14,15,16,18,19  0，86开头将自动识别
+            </summary>
+            <param name="str">手机号</param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.MobileFilter(System.String)">
+            <summary>
+            过滤手机号 号段为13,14,15,16,18,19  0，86开头将自动识别
+            </summary>
+            <param name="mobile">手机号 ,分隔</param>
+            <returns>合法手机号 ,分隔(将自动调整格式，如：去除开头0)</returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.GetCLength(System.String)">
+            <summary>
+            获取半角字符长度，一个汉字字符将被计算为两个字符
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.RemoveChinese(System.String)">
+            <summary>
+            移除中文
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.XmlSerialize(System.Object)">
+            <summary>
+            XML序列化 UTF-8
+            </summary>
+            <param name="obj"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIFunction.XmlDeserialize``1(System.String)">
+            <summary>
+            XML反序列化 UTF-8
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="xmlString"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SIStudio.Framework.SIConvert">
+            <summary>
+            数据类型转换
+            </summary>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToLong(System.Object)">
+            <summary>
+            将object转换为long，若转换失败，则返回0。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToLong(System.String,System.Int64)">
+            <summary>
+            将object转换为long，若转换失败，则返回指定值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToInt(System.Object)">
+            <summary>
+            将object转换为int，若转换失败，则返回0。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToInt(System.Object,System.Int32)">
+            <summary>
+            将object转换为int，若转换失败，则返回指定值。不抛出异常。 
+            null返回默认值
+            </summary>
+            <param name="str"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToShort(System.Object)">
+            <summary>
+            将object转换为short，若转换失败，则返回0。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToShort(System.Object,System.Int16)">
+            <summary>
+            将object转换为short，若转换失败，则返回指定值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToDecimal(System.Object,System.Decimal)">
+            <summary>
+            将object转换为demical，若转换失败，则返回指定值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToDecimal(System.Object)">
+            <summary>
+            将object转换为demical，若转换失败，则返回0。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToBool(System.Object)">
+            <summary>
+            将object转换为bool，若转换失败，则返回false。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToBool(System.Object,System.Boolean)">
+            <summary>
+            将object转换为bool，若转换失败，则返回指定值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToFloat(System.Object)">
+            <summary>
+            将object转换为float，若转换失败，则返回0。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToFloat(System.Object,System.Single)">
+            <summary>
+            将object转换为float，若转换失败，则返回指定值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToGuid(System.String)">
+            <summary>
+            将string转换为Guid，若转换失败，则返回Guid.Empty。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToDateTime(System.String)">
+            <summary>
+            将string转换为DateTime，若转换失败，则返回日期最小值。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToDateTime(System.String,System.Nullable{System.DateTime})">
+            <summary>
+            将string转换为DateTime，若转换失败，则返回默认值。  
+            </summary>
+            <param name="str"></param>
+            <param name="defaultValue"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SIConvert.ToString(System.Object)">
+            <summary>
+            将object转换为string，若转换失败，则返回""。不抛出异常。  
+            </summary>
+            <param name="str"></param>
+            <returns></returns>
+        </member>
+        <member name="T:SIStudio.Framework.Result">
+            <summary>
+            通用返回结果对象
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.Result.isOK">
+            <summary>
+            结果状态
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.Result.returnID">
+            <summary>
+            结果int
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.Result.returnValue">
+            <summary>
+            结果object
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.Result.description">
+            <summary>
+            结果描述
+            </summary>
+        </member>
+        <member name="F:SIStudio.Framework.Result.expDescription">
+            <summary>
+            异常描述
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.IsOK">
+            <summary>
+            结果状态
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.ReturnID">
+            <summary>
+            结果int
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.ReturnValue">
+            <summary>
+            结果object
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.Description">
+            <summary>
+            结果描述
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.IsException">
+            <summary>
+            是否异常
+            </summary>
+        </member>
+        <member name="P:SIStudio.Framework.Result.ExpDescription">
+            <summary>
+            异常描述
+            </summary>
+        </member>
+        <member name="T:SIStudio.Framework.SISecurity">
+            <summary>
+            加解密
+            </summary>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.MD5(System.String)">
+            <summary>
+            MD5加密
+            </summary>
+            <param name="oldValue">要被加密的字符串</param>
+            <returns>加密后的32位字符串</returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.DESEncrypt(System.String)">
+            <summary>
+            DES加密字符串
+            </summary>
+            <param name="inputStr">需要加密字符串</param>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.DESDecrypt(System.String)">
+            <summary>
+            DES解密字符串
+            </summary>
+            <param name="inputStr">要解密的字符串</param>
+            <returns>解密后的结果</returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.SIEncrypt(System.String)">
+            <summary>
+            对称性加密
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.ToBase64(System.Char[],System.Int32,System.Char[])">
+            <summary>
+            字符串转换为Base64
+            </summary>
+            <param name="instr"></param>
+            <param name="len"></param>
+            <param name="outstr"></param>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.UnIndex64(System.Int32)">
+            <summary>
+            根据数值得到相应字符
+            </summary>
+            <param name="nIndex"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.SIDecrypt(System.String)">
+            <summary>
+            对称性解密
+            </summary>
+            <param name="source"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.randchar">
+            <summary>
+            随机字符
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.UnBase64(System.Char[],System.Int32,System.Char[])">
+            <summary>
+            解码Base64编码的字符串
+            </summary>
+            <param name="instr">instr由字符(字母、数字、'_'、'.')组成的字符串，长度为len，为4的倍数</param>
+            <param name="len">len instr的字符个数，为3的倍数 </param>
+            <param name="outstr">填充由字符(字母、数字、'_'、'.')组成的字符串，长度为4的倍数 </param>
+            <remarks> An indexed by characters (string conversion letters, Numbers, '_', '. ') composition string</remarks>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.EncryptChar(System.Char)">
+            <summary>
+             EncryptChar 对一个字符进行移位变换：最高位不变，其余7位对调（1-7,2-6,3-5）
+            </summary>
+            <param name="c"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SIStudio.Framework.SISecurity.Index64(System.Char)">
+            <summary>
+            字符转换为相应的数值
+            </summary>
+            <param name="ch"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
